@@ -73,7 +73,7 @@ public class WeaponSway : MonoBehaviour
     void SwayRotation()
     {
         Vector2 invertLook = lookInput * -rotationStep;
-        invertLook.y += walkInput.x*-playerController.CurrentMoveVelocity.magnitude;
+        invertLook.y += walkInput.x*-playerController.CurrentMoveVelocity.magnitude*1.5f;
         invertLook.x = Mathf.Clamp(invertLook.x, -maxRotationStep, maxRotationStep);
         invertLook.y = Mathf.Clamp(invertLook.y, -maxRotationStep, maxRotationStep);
         swayEulerRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
@@ -100,6 +100,5 @@ public class WeaponSway : MonoBehaviour
         bobEulerRotation.y = (walkInput != Vector2.zero ? multiplier.y * curveCos : 0);
         bobEulerRotation.z = (walkInput != Vector2.zero ? multiplier.z * curveCos * walkInput.x : 0);
     }
-
 }
 

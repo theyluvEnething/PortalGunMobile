@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector3 CurrentMoveVelocity;
     [HideInInspector] public Vector3 MoveDampVelocity;
 
+    bool isJumping  = false;
+    float jumpTimer = 10f;
     private void PlayerMovemement()
     {
         Vector3 PlayerInput = new Vector3
@@ -59,23 +61,58 @@ public class PlayerController : MonoBehaviour
 
         Controller.Move(CurrentMoveVelocity * Time.deltaTime);
 
-        Ray groundCheckRay = new Ray(transform.position, Vector3.down);
-        if (Physics.Raycast(groundCheckRay, 1.1f))
+        isGrounded = false;
+        Vector3 xOffset = new Vector3(0.49f, 0f, 0f);
+        Vector3 zOffset = new Vector3(0f, 0f, 0.49f);
+
+        Ray[] groundCheckRay = new Ray[9];
+        groundCheckRay[0] = new Ray(transform.position, Vector3.down);
+        groundCheckRay[1] = new Ray(transform.position - xOffset, Vector3.down);
+        groundCheckRay[2] = new Ray(transform.position + xOffset, Vector3.down);
+        groundCheckRay[3] = new Ray(transform.position - zOffset, Vector3.down);
+        groundCheckRay[4] = new Ray(transform.position + zOffset, Vector3.down);
+        groundCheckRay[5] = new Ray(transform.position - xOffset - zOffset, Vector3.down);
+        groundCheckRay[6] = new Ray(transform.position + xOffset + zOffset, Vector3.down);
+        groundCheckRay[7] = new Ray(transform.position - zOffset - xOffset, Vector3.down);
+        groundCheckRay[8] = new Ray(transform.position + zOffset + xOffset, Vector3.down);
+
+        for (int i = 0; i < groundCheckRay.Length; i++)
         {
-            isGrounded = true;
+            RaycastHit hit;
+            if (Physics.Raycast(groundCheckRay[i], 1.1f))
+            {
+                isGrounded = true;
+            }
+        }
+
+        if (isGrounded)
+        {
             CurrentForceVelocity.y = -2f;
 
             if (Input.GetKey(KeyCode.Space))
-            {
+            { 
                 CurrentForceVelocity.y = JumpStrength;
             }
         }
         else
         {
-            isGrounded = false;
             CurrentForceVelocity.y -= GravityStrength * Time.deltaTime;
         }
 
+    
+        //if (!Input.GetKey(KeyCode.Space))
+        //{
+        //    isJumping = false;
+        //    jumpTimer = 10f;
+        //}
+        //else if (isJumping && jumpTimer >= 0)
+        //{
+        //    //CurrentForceVeloicty.y = 0f;
+        //    CurrentForceVelocity.y += JumpStrength/2f;
+        //    jumpTimer--;
+        //}
+        //Debug.Log(jumpTimer);
+        
         Controller.Move(CurrentForceVelocity * Time.deltaTime);
     }
 
@@ -105,6 +142,25 @@ public class PlayerController : MonoBehaviour
         transform.eulerAngles = new Vector3(0f, Rotation.y, 0f);
         PlayerCamera.localEulerAngles = new Vector3(Rotation.x, 0f, 0f);
     }
+
+    private void OnDrawGizmos()
+    {
+        //Vector3 xOffset = new Vector3(0.5f, 0f, 0f);
+        //Vector3 zOffset = new Vector3(0f, 0f, 0.5f);
+
+        //Gizmos.color = Color.red;
+
+        //Gizmos.DrawLine(transform.position + xOffset, Vector3.down);
+        //Gizmos.DrawLine(transform.position - xOffset, Vector3.down);
+        //Gizmos.DrawLine(transform.position + zOffset, Vector3.down);
+        //Gizmos.DrawLine(transform.position - zOffset, Vector3.down);
+
+        //Gizmos.DrawLine(transform.position - xOffset - zOffset, Vector3.down);
+        //Gizmos.DrawLine(transform.position + xOffset + zOffset, Vector3.down);
+        //Gizmos.DrawLine(transform.position - zOffset - xOffset, Vector3.down);
+        //Gizmos.DrawLine(transform.position + zOffset + xOffset, Vector3.down);
+    }
+
 
     #endregion
 }
