@@ -62,8 +62,8 @@ public class PlayerController : MonoBehaviour
         Controller.Move(CurrentMoveVelocity * Time.deltaTime);
 
         isGrounded = false;
-        Vector3 xOffset = new Vector3(0.49f, 0f, 0f);
-        Vector3 zOffset = new Vector3(0f, 0f, 0.49f);
+        Vector3 xOffset = new Vector3(0.39f, 0f, 0f);
+        Vector3 zOffset = new Vector3(0f, 0f, 0.39f);
 
         Ray[] groundCheckRay = new Ray[9];
         groundCheckRay[0] = new Ray(transform.position, Vector3.down);

@@ -127,6 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c1ce421ea76b94481cfd8efb15c794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PortalPrefab: {fileID: 2690583441969820061, guid: 512fb573dfa884b4b9f990804543d47e,
+  PortalPrefab: {fileID: 2198863254564140904, guid: 5b57fc4c1c0eb3f46a95a0171ff5c5de,
     type: 3}
   isOrange: 0
